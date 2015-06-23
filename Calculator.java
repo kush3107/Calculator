@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
  * Created by Kushagra on 22-06-2015.
  */
 public class Calculator extends JFrame implements ActionListener {
-    float value1, value2, result;
+    float value1, value2, result, counter = 0;
+    int check = 0;
+    char ch, ch1;
     private JButton buttonOne;
     private JPanel panel1;
     private JButton buttonTwo;
@@ -26,6 +28,7 @@ public class Calculator extends JFrame implements ActionListener {
     private JButton buttonSeven;
     private JButton buttonZero;
     private JTextField Output;
+    private JButton Clear;
 
     public Calculator() {
         super();
@@ -47,25 +50,48 @@ public class Calculator extends JFrame implements ActionListener {
         this.Subtract.addActionListener(this);
         this.Divide.addActionListener(this);
         this.Multiply.addActionListener(this);
-
-
+        this.Result.addActionListener(this);
+        this.Clear.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        e.getSource();
-        if (e.getSource() != Addition || e.getSource() != Subtract || e.getSource() != Multiply || e.getSource() != Divide || e.getSource() != Result) {
-            this.Output.setText(this.Output.getText() + ((JButton) e.getSource()).getText());
+        if (e.getSource() == Addition || e.getSource() == Subtract || e.getSource() == Multiply || e.getSource() == Divide) {
             value1 = Float.parseFloat(this.Output.getText());
-        }
-        else if (e.getSource()==Result){
-            
-        }
-        else {
+            ch = (((JButton) e.getSource()).getText()).charAt(0);
             this.Output.setText("");
-            this.Output.setText(this.Output.getText() + ((JButton) e.getSource()).getText());
-            value2 = Float.parseFloat(this.Output.getText());
 
+        } else if (e.getSource() == buttonOne || e.getSource() == buttonTwo || e.getSource() == buttonThree || e.getSource() == buttonFour || e.getSource() == buttonFive || e.getSource() == buttonSix || e.getSource() == buttonSeven || e.getSource() == buttonEight || e.getSource() == buttonNine || e.getSource() == buttonZero) {
+            if (result != 0) {
+                this.Output.setText("");
+                result = 0;
+            }
+            this.Output.setText(this.Output.getText() + ((JButton) e.getSource()).getText());
+        } else if (e.getSource() == Result) {
+            value2 = Float.parseFloat(this.Output.getText());
+            switch (ch) {
+                case '+':
+                    result = value1 + value2;
+                    break;
+                case '-':
+                    result = value1 - value2;
+                    break;
+                case '*':
+                    result = value1 * value2;
+                    break;
+                case '/':
+                    result = value1 / value2;
+                    break;
+                default:
+                    result = 0;
+            }
+            this.Output.setText(Float.toString(result));
+        } else if (e.getSource() == Clear) {
+            String current = this.Output.getText();
+            current = current.replace(current.substring(current.length() - 1), "");
+            this.Output.setText(current);
         }
+
     }
+
 }
